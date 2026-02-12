@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { HealthMetrics } from '../types';
 import { analyzeHealthMetrics } from '../services/geminiService';
@@ -71,7 +70,6 @@ const HealthTracker: React.FC<Props> = ({ onMetricAdd }) => {
     setIsAnalyzing(true);
     setAiInsight(null);
     try {
-      // Analyze holistic data: Watch syncs, Google Fit data, manual steps/running/sleep
       const insight = await analyzeHealthMetrics(metrics);
       setAiInsight(insight);
     } catch (e) {
@@ -89,12 +87,10 @@ const HealthTracker: React.FC<Props> = ({ onMetricAdd }) => {
       if (!(navigator as any).bluetooth) {
         throw new Error("Bluetooth is not supported in this browser.");
       }
-
       const device = await (navigator as any).bluetooth.requestDevice({
         acceptAllDevices: true,
         optionalServices: ['heart_rate', 'battery_service']
       });
-
       setFoundDevices([{ name: device.name || 'Unknown Device', id: device.id }]);
     } catch (err: any) {
       if (err.name === 'NotFoundError' || err.message.includes('User cancelled')) {
@@ -155,22 +151,22 @@ const HealthTracker: React.FC<Props> = ({ onMetricAdd }) => {
   const currentStatus = metrics[metrics.length - 1];
 
   return (
-    <div className="space-y-8 animate-fadeIn">
+    <div className="space-y-8 animate-fadeIn font-normal">
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
         <div>
-          <h2 className="text-3xl font-black text-slate-900 tracking-tight">Biological Hub</h2>
+          <h2 className="text-3xl font-bold text-slate-900 tracking-tight">Biological Hub</h2>
           <p className="text-slate-500 font-medium mt-1">Unified synchronization across wearables and health ecosystems.</p>
         </div>
         <div className="flex items-center gap-3">
           <button 
             onClick={() => { setConnectionType('bluetooth'); setShowConnectModal(true); handleBluetoothScan(); }}
-            className="flex items-center gap-2 bg-white border border-slate-200 px-6 py-3.5 rounded-2xl text-[10px] font-black uppercase tracking-widest hover:bg-slate-50 transition-all shadow-sm active:scale-95"
+            className="flex items-center gap-2 bg-white border border-slate-200 px-6 py-3.5 rounded-2xl text-[10px] font-bold uppercase tracking-widest hover:bg-slate-50 transition-all shadow-sm active:scale-95"
           >
             <Watch className="w-5 h-5 text-indigo-600" /> Bluetooth Watch
           </button>
           <button 
             onClick={() => { setConnectionType('google-fit'); setShowConnectModal(true); handleGoogleFitSearch(); }}
-            className="flex items-center gap-2 bg-slate-900 text-white px-6 py-3.5 rounded-2xl text-[10px] font-black uppercase tracking-widest hover:bg-black transition-all shadow-xl active:scale-95"
+            className="flex items-center gap-2 bg-slate-900 text-white px-6 py-3.5 rounded-2xl text-[10px] font-bold uppercase tracking-widest hover:bg-black transition-all shadow-xl active:scale-95"
           >
             <Smartphone className="w-5 h-5 text-emerald-400" /> Google Fit
           </button>
@@ -186,16 +182,16 @@ const HealthTracker: React.FC<Props> = ({ onMetricAdd }) => {
               <div>
                  <div className="flex items-center gap-2 mb-1">
                    <div className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse shadow-[0_0_10px_#34d399]" />
-                   <span className="text-[10px] font-black uppercase tracking-[0.25em] text-indigo-100">Sensor Status: Active</span>
+                   <span className="text-[10px] font-bold uppercase tracking-[0.25em] text-indigo-100">Sensor Status: Active</span>
                  </div>
-                 <h4 className="font-black text-3xl tracking-tight">{connectedDevices[0].name} Synchronized</h4>
+                 <h4 className="font-bold text-3xl tracking-tight">{connectedDevices[0].name} Synchronized</h4>
                  <p className="text-indigo-100/70 text-sm font-medium mt-2">Streaming real-time biometric telemetry to VitalityPulse.</p>
               </div>
            </div>
            <button 
              onClick={syncData}
              disabled={isSyncing}
-             className="bg-white text-indigo-600 px-12 py-5 rounded-2xl text-xs font-black uppercase tracking-widest flex items-center gap-3 hover:bg-indigo-50 transition-all disabled:opacity-50 shadow-2xl active:scale-95 relative z-10"
+             className="bg-white text-indigo-600 px-12 py-5 rounded-2xl text-xs font-bold uppercase tracking-widest flex items-center gap-3 hover:bg-indigo-50 transition-all disabled:opacity-50 shadow-2xl active:scale-95 relative z-10"
            >
              {isSyncing ? <Loader2 className="w-5 h-5 animate-spin" /> : <RefreshCw className="w-5 h-5" />}
              Fetch Sensor Data
@@ -217,13 +213,13 @@ const HealthTracker: React.FC<Props> = ({ onMetricAdd }) => {
               </div>
               <div className="flex flex-col items-end">
                 <TrendingUp className="text-emerald-500 w-5 h-5 mb-1" />
-                <span className="text-[10px] font-black text-emerald-600">+12%</span>
+                <span className="text-[10px] font-bold text-emerald-600">+12%</span>
               </div>
             </div>
-            <h4 className="text-slate-400 text-[10px] font-black uppercase tracking-[0.3em] mb-3">{card.label}</h4>
+            <h4 className="text-slate-400 text-[10px] font-bold uppercase tracking-[0.3em] mb-3">{card.label}</h4>
             <div className="flex items-baseline gap-2">
-              <span className="text-5xl font-black text-slate-900 tracking-tight">{card.value.toLocaleString()}</span>
-              <span className="text-slate-400 text-xs font-black uppercase tracking-widest">{card.unit}</span>
+              <span className="text-5xl font-bold text-slate-900 tracking-tight">{card.value.toLocaleString()}</span>
+              <span className="text-slate-400 text-xs font-bold uppercase tracking-widest">{card.unit}</span>
             </div>
           </div>
         ))}
@@ -233,7 +229,7 @@ const HealthTracker: React.FC<Props> = ({ onMetricAdd }) => {
         <div className="lg:col-span-2 space-y-8">
           <div className="bg-white p-10 rounded-[3rem] shadow-sm border border-slate-100">
              <div className="flex justify-between items-center mb-12">
-               <h3 className="text-2xl font-black text-slate-800 flex items-center gap-4">
+               <h3 className="text-2xl font-bold text-slate-800 flex items-center gap-4">
                 <Zap className="w-8 h-8 text-indigo-600" /> Biological Trends
                </h3>
                <div className="flex gap-2">
@@ -250,11 +246,11 @@ const HealthTracker: React.FC<Props> = ({ onMetricAdd }) => {
                     </linearGradient>
                   </defs>
                   <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
-                  <XAxis dataKey="date" axisLine={false} tickLine={false} tick={{fill: '#94a3b8', fontSize: 11, fontWeight: 900}} dy={15} />
+                  <XAxis dataKey="date" axisLine={false} tickLine={false} tick={{fill: '#94a3b8', fontSize: 11, fontWeight: 700}} dy={15} />
                   <YAxis hide />
                   <Tooltip 
                     contentStyle={{borderRadius: '24px', border: 'none', boxShadow: '0 25px 50px -12px rgb(0 0 0 / 0.15)', padding: '16px'}} 
-                    itemStyle={{fontWeight: '900', color: '#4f46e5'}}
+                    itemStyle={{fontWeight: '700', color: '#4f46e5'}}
                   />
                   <Area type="monotone" dataKey="walk" stroke="#6366f1" strokeWidth={6} fillOpacity={1} fill="url(#colorWalkSync)" animationDuration={2000} strokeLinecap="round" />
                 </AreaChart>
@@ -269,14 +265,14 @@ const HealthTracker: React.FC<Props> = ({ onMetricAdd }) => {
                   <Brain className="w-10 h-10" />
                 </div>
                 <div>
-                  <h3 className="text-3xl font-black text-slate-900 tracking-tight">Holistic AI Diagnostics</h3>
+                  <h3 className="text-3xl font-bold text-slate-900 tracking-tight">Holistic AI Diagnostics</h3>
                   <p className="text-slate-500 text-base font-medium mt-1">Unified correlation across all synchronized health vectors.</p>
                 </div>
               </div>
               <button 
                 onClick={generateAIInsight}
                 disabled={isAnalyzing}
-                className="px-10 py-5 bg-indigo-600 text-white font-black rounded-3xl text-xs uppercase tracking-widest hover:bg-indigo-700 transition-all shadow-2xl shadow-indigo-200 disabled:opacity-50 flex items-center gap-3 active:scale-95"
+                className="px-10 py-5 bg-indigo-600 text-white font-bold rounded-3xl text-xs uppercase tracking-widest hover:bg-indigo-700 transition-all shadow-2xl shadow-indigo-200 disabled:opacity-50 flex items-center gap-3 active:scale-95"
               >
                 {isAnalyzing ? <Loader2 className="w-5 h-5 animate-spin" /> : <Sparkles className="w-5 h-5" />}
                 Analyze Biometrics
@@ -286,10 +282,10 @@ const HealthTracker: React.FC<Props> = ({ onMetricAdd }) => {
             {aiInsight ? (
               <div className="space-y-10 animate-slideUp relative z-10">
                 <div className="p-8 bg-white rounded-[2.5rem] border border-indigo-100 shadow-lg relative">
-                  <h4 className="text-[10px] font-black text-indigo-600 uppercase tracking-[0.3em] mb-4 flex items-center gap-2">
+                  <h4 className="text-[10px] font-bold text-indigo-600 uppercase tracking-[0.3em] mb-4 flex items-center gap-2">
                     <ShieldCheck className="w-4 h-4" /> Clinical Holistic Summary
                   </h4>
-                  <p className="text-slate-800 font-bold text-xl leading-relaxed italic pr-12">"{aiInsight.summary}"</p>
+                  <p className="text-slate-800 font-semibold text-xl leading-relaxed italic pr-12">"{aiInsight.summary}"</p>
                   <div className="absolute top-8 right-8 text-indigo-100">
                     <Sparkles className="w-12 h-12" />
                   </div>
@@ -297,24 +293,24 @@ const HealthTracker: React.FC<Props> = ({ onMetricAdd }) => {
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                   <div className="space-y-4">
-                    <h5 className="text-[10px] font-black text-slate-400 uppercase tracking-widest px-4 mb-2">Biological Patterns</h5>
+                    <h5 className="text-[10px] font-bold text-slate-400 uppercase tracking-widest px-4 mb-2">Biological Patterns</h5>
                     {aiInsight.patterns.map((pattern: string, i: number) => (
                       <div key={i} className="p-6 bg-white rounded-3xl border border-slate-100 flex items-start gap-4 shadow-sm hover:shadow-md transition-shadow">
                         <div className="bg-indigo-50 p-2 rounded-xl text-indigo-600">
                           <TrendingUp className="w-5 h-5 shrink-0" />
                         </div>
-                        <span className="text-sm font-bold text-slate-700 leading-snug">{pattern}</span>
+                        <span className="text-sm font-semibold text-slate-700 leading-snug">{pattern}</span>
                       </div>
                     ))}
                   </div>
                   <div className="space-y-4">
-                    <h5 className="text-[10px] font-black text-slate-400 uppercase tracking-widest px-4 mb-2">Prescriptive Wellness Tips</h5>
+                    <h5 className="text-[10px] font-bold text-slate-400 uppercase tracking-widest px-4 mb-2">Prescriptive Wellness Tips</h5>
                     {aiInsight.tips.map((tip: string, i: number) => (
                       <div key={i} className="p-6 bg-emerald-50 rounded-3xl border border-emerald-100 flex items-start gap-4 shadow-sm hover:shadow-md transition-shadow">
                         <div className="bg-emerald-100 p-2 rounded-xl text-emerald-600">
                           <CheckCircle2 className="w-5 h-5 shrink-0" />
                         </div>
-                        <span className="text-sm font-bold text-emerald-900 leading-snug">{tip}</span>
+                        <span className="text-sm font-semibold text-emerald-900 leading-snug">{tip}</span>
                       </div>
                     ))}
                   </div>
@@ -325,7 +321,7 @@ const HealthTracker: React.FC<Props> = ({ onMetricAdd }) => {
                 <div className="w-20 h-20 bg-slate-50 rounded-full flex items-center justify-center mx-auto mb-6">
                   <Search className="w-10 h-10 opacity-20" />
                 </div>
-                <h4 className="text-lg font-black text-slate-300 uppercase tracking-widest">Awaiting Metric Stream</h4>
+                <h4 className="text-lg font-bold text-slate-300 uppercase tracking-widest">Awaiting Metric Stream</h4>
                 <p className="text-sm font-medium mt-2 max-w-xs mx-auto">Generate a comprehensive health report by analyzing your holistic biometric data.</p>
               </div>
             )}
@@ -335,30 +331,30 @@ const HealthTracker: React.FC<Props> = ({ onMetricAdd }) => {
 
         <div className="space-y-8">
           <div className="bg-white p-10 rounded-[3rem] shadow-sm border border-slate-100">
-             <h3 className="text-2xl font-black text-slate-800 mb-8">Manual Telemetry</h3>
+             <h3 className="text-2xl font-bold text-slate-800 mb-8">Manual Telemetry</h3>
              <div className="space-y-8">
                <div className="group">
-                 <label className="block text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-3 px-1 group-focus-within:text-indigo-600 transition-colors">Daily Steps Count</label>
+                 <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em] mb-3 px-1 group-focus-within:text-indigo-600 transition-colors">Daily Steps Count</label>
                  <div className="relative">
                    <Footprints className="absolute left-5 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-300 group-focus-within:text-indigo-600 transition-colors" />
-                   <input type="number" className="w-full pl-14 pr-6 py-5 bg-slate-50 border border-slate-100 rounded-2xl outline-none focus:ring-4 focus:ring-indigo-100 font-black text-lg transition-all" value={input.walk} onChange={e => setInput({...input, walk: parseInt(e.target.value) || 0})} />
+                   <input type="number" className="w-full pl-14 pr-6 py-5 bg-slate-50 border border-slate-100 rounded-2xl outline-none focus:ring-4 focus:ring-indigo-100 font-bold text-lg transition-all" value={input.walk} onChange={e => setInput({...input, walk: parseInt(e.target.value) || 0})} />
                  </div>
                </div>
                <div className="group">
-                 <label className="block text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-3 px-1 group-focus-within:text-indigo-600 transition-colors">Running Distance (KM)</label>
+                 <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em] mb-3 px-1 group-focus-within:text-indigo-600 transition-colors">Running Distance (KM)</label>
                  <div className="relative">
                    <Play className="absolute left-5 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-300 group-focus-within:text-indigo-600 transition-colors" />
-                   <input type="number" step="0.1" className="w-full pl-14 pr-6 py-5 bg-slate-50 border border-slate-100 rounded-2xl outline-none focus:ring-4 focus:ring-indigo-100 font-black text-lg transition-all" value={input.run} onChange={e => setInput({...input, run: parseFloat(e.target.value) || 0})} />
+                   <input type="number" step="0.1" className="w-full pl-14 pr-6 py-5 bg-slate-50 border border-slate-100 rounded-2xl outline-none focus:ring-4 focus:ring-indigo-100 font-bold text-lg transition-all" value={input.run} onChange={e => setInput({...input, run: parseFloat(e.target.value) || 0})} />
                  </div>
                </div>
                <div className="group">
-                 <label className="block text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-3 px-1 group-focus-within:text-indigo-600 transition-colors">Sleep Duration (HRS)</label>
+                 <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em] mb-3 px-1 group-focus-within:text-indigo-600 transition-colors">Sleep Duration (HRS)</label>
                  <div className="relative">
                    <Moon className="absolute left-5 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-300 group-focus-within:text-indigo-600 transition-colors" />
-                   <input type="number" step="0.5" className="w-full pl-14 pr-6 py-5 bg-slate-50 border border-slate-100 rounded-2xl outline-none focus:ring-4 focus:ring-indigo-100 font-black text-lg transition-all" value={input.sleep} onChange={e => setInput({...input, sleep: parseFloat(e.target.value) || 0})} />
+                   <input type="number" step="0.5" className="w-full pl-14 pr-6 py-5 bg-slate-50 border border-slate-100 rounded-2xl outline-none focus:ring-4 focus:ring-indigo-100 font-bold text-lg transition-all" value={input.sleep} onChange={e => setInput({...input, sleep: parseFloat(e.target.value) || 0})} />
                  </div>
                </div>
-               <button onClick={addMetric} className="w-full py-6 bg-slate-900 text-white text-xs font-black uppercase tracking-[0.2em] rounded-3xl hover:bg-black transition-all flex items-center justify-center gap-3 shadow-2xl active:scale-95">
+               <button onClick={addMetric} className="w-full py-6 bg-slate-900 text-white text-xs font-bold uppercase tracking-[0.2em] rounded-3xl hover:bg-black transition-all flex items-center justify-center gap-3 shadow-2xl active:scale-95">
                  <Plus className="w-6 h-6" /> Commit Entry (+10 XP)
                </button>
              </div>
@@ -372,7 +368,7 @@ const HealthTracker: React.FC<Props> = ({ onMetricAdd }) => {
             <div className="p-10 border-b border-slate-100 flex justify-between items-center bg-slate-50">
                <div className="flex items-center gap-4">
                   {connectionType === 'bluetooth' ? <Bluetooth className="w-8 h-8 text-indigo-600" /> : <Smartphone className="w-8 h-8 text-emerald-600" />}
-                  <h3 className="text-2xl font-black text-slate-900 tracking-tight">
+                  <h3 className="text-2xl font-bold text-slate-900 tracking-tight">
                     {connectionType === 'bluetooth' ? 'Sensor Chooser' : 'Ecosystem Link'}
                   </h3>
                </div>
@@ -391,19 +387,19 @@ const HealthTracker: React.FC<Props> = ({ onMetricAdd }) => {
                   {isScanning ? (
                     <div className="text-center py-10">
                        <Loader2 className="w-16 h-16 text-indigo-600 animate-spin mx-auto mb-8 shadow-indigo-100" />
-                       <p className="text-xl font-black text-slate-900 tracking-tight">Broadcasting Scan...</p>
-                       <p className="text-[10px] text-slate-400 mt-3 font-black uppercase tracking-[0.3em]">Ensure visibility mode is enabled</p>
+                       <p className="text-xl font-bold text-slate-900 tracking-tight">Broadcasting Scan...</p>
+                       <p className="text-[10px] text-slate-400 mt-3 font-bold uppercase tracking-[0.3em]">Ensure visibility mode is enabled</p>
                     </div>
                   ) : foundDevices.length > 0 ? (
                     <div className="space-y-4">
-                       <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.25em] text-center mb-8">Valid Targets Discovered</p>
+                       <p className="text-[10px] font-bold text-slate-400 uppercase tracking-[0.25em] text-center mb-8">Valid Targets Discovered</p>
                        {foundDevices.map((device, idx) => (
                          <button key={idx} onClick={() => connectDevice(device)} className="w-full p-6 bg-white rounded-[2rem] border border-slate-100 flex items-center justify-between group hover:border-indigo-600 hover:shadow-2xl transition-all active:scale-[0.98]">
                             <div className="flex items-center gap-5">
                                <div className="w-14 h-14 bg-slate-50 rounded-2xl flex items-center justify-center text-slate-400 group-hover:bg-indigo-600 group-hover:text-white transition-all shadow-inner border border-slate-100"><Watch className="w-7 h-7" /></div>
                                <div className="text-left">
-                                  <span className="font-black text-slate-800 text-base tracking-tight block">{device.name}</span>
-                                  <span className="text-[9px] font-black text-emerald-600 uppercase tracking-widest">Signal: Excellent</span>
+                                  <span className="font-bold text-slate-800 text-base tracking-tight block">{device.name}</span>
+                                  <span className="text-[9px] font-bold text-emerald-600 uppercase tracking-widest">Signal: Excellent</span>
                                </div>
                             </div>
                             <ChevronRight className="w-6 h-6 text-slate-200 group-hover:text-indigo-600 group-hover:translate-x-1 transition-all" />
@@ -414,7 +410,7 @@ const HealthTracker: React.FC<Props> = ({ onMetricAdd }) => {
                     <div className="text-center py-12">
                        <div className="w-24 h-24 bg-white rounded-[2.5rem] flex items-center justify-center mx-auto mb-8 shadow-inner border border-slate-100"><Search className="w-12 h-12 text-slate-200" /></div>
                        <p className="text-sm font-bold text-slate-500 uppercase tracking-widest">Spectral Scan Idle</p>
-                       <button onClick={connectionType === 'bluetooth' ? handleBluetoothScan : handleGoogleFitSearch} className="mt-10 px-12 py-5 bg-slate-950 text-white rounded-[2rem] text-xs font-black uppercase tracking-widest hover:bg-black transition-all shadow-2xl shadow-slate-200 active:scale-95">Initiate Search</button>
+                       <button onClick={connectionType === 'bluetooth' ? handleBluetoothScan : handleGoogleFitSearch} className="mt-10 px-12 py-5 bg-slate-950 text-white rounded-[2rem] text-xs font-bold uppercase tracking-widest hover:bg-black transition-all shadow-2xl shadow-slate-200 active:scale-95">Initiate Search</button>
                     </div>
                   )}
                </div>

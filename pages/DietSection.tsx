@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { analyzeDiet } from '../services/geminiService';
 import { DietAnalysisResult, Article } from '../types';
@@ -17,7 +16,8 @@ import {
   Bookmark,
   ExternalLink,
   BookOpen,
-  CheckCircle2
+  CheckCircle2,
+  Send
 } from 'lucide-react';
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend } from 'recharts';
 
@@ -61,10 +61,10 @@ const DietSection: React.FC<Props> = ({ articles, onAddToLibrary, onLog }) => {
   ] : [];
 
   return (
-    <div className="space-y-8 animate-fadeIn">
+    <div className="space-y-8 animate-fadeIn font-normal">
       <div className="flex justify-between items-center">
         <div className="flex flex-col">
-          <h2 className="text-3xl font-black text-slate-900 tracking-tight">Nutritional Laboratory</h2>
+          <h2 className="text-3xl font-bold text-slate-900 tracking-tight">Nutritional Laboratory</h2>
           <p className="text-slate-500 text-sm font-medium mt-1">Real-time biological analysis of caloric and nutrient intake.</p>
         </div>
       </div>
@@ -72,14 +72,14 @@ const DietSection: React.FC<Props> = ({ articles, onAddToLibrary, onLog }) => {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         <div className="lg:col-span-2 space-y-8">
           <div className="bg-white p-10 rounded-[3rem] shadow-sm border border-slate-100">
-            <h3 className="text-2xl font-black mb-6 flex items-center gap-3 text-slate-800">
+            <h3 className="text-2xl font-bold mb-6 flex items-center gap-3 text-slate-800">
               <Apple className="w-8 h-8 text-indigo-600" />
               Meal Telemetry Input
             </h3>
             <p className="text-slate-500 text-sm mb-8 font-medium">Earn +15 XP for logging, and +10 XP bonus for AI-verified clinical healthy choices.</p>
             <div className="relative group">
               <input
-                className="w-full p-6 pr-20 bg-slate-50 border-2 border-slate-100 rounded-3xl focus:ring-4 focus:ring-indigo-100 focus:border-indigo-600 outline-none transition-all font-bold text-slate-700 text-lg shadow-inner"
+                className="w-full p-6 pr-20 bg-slate-50 border-2 border-slate-100 rounded-3xl focus:ring-4 focus:ring-indigo-100 focus:border-indigo-600 outline-none transition-all font-semibold text-slate-700 text-lg shadow-inner"
                 placeholder="e.g., Grilled salmon with quinoa and roasted asparagus"
                 value={foodInput}
                 onChange={(e) => setFoodInput(e.target.value)}
@@ -89,7 +89,7 @@ const DietSection: React.FC<Props> = ({ articles, onAddToLibrary, onLog }) => {
                 disabled={loading || !foodInput}
                 className="absolute right-4 top-4 bottom-4 bg-indigo-600 hover:bg-indigo-700 text-white px-6 rounded-2xl disabled:opacity-50 transition-all shadow-xl shadow-indigo-100 active:scale-95 flex items-center justify-center"
               >
-                {loading ? <Loader2 className="animate-spin w-6 h-6" /> : <SendIcon className="w-6 h-6" />}
+                {loading ? <Loader2 className="animate-spin w-6 h-6" /> : <Send className="w-6 h-6" />}
               </button>
             </div>
           </div>
@@ -97,7 +97,7 @@ const DietSection: React.FC<Props> = ({ articles, onAddToLibrary, onLog }) => {
           {analysis && (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 animate-slideUp">
               <div className="bg-white p-10 rounded-[3rem] shadow-xl border border-slate-100 flex flex-col items-center group">
-                <h4 className="font-black text-slate-400 text-[10px] uppercase tracking-[0.3em] mb-10">Macro Correlation</h4>
+                <h4 className="font-bold text-slate-400 text-[10px] uppercase tracking-[0.3em] mb-10">Macro Correlation</h4>
                 <div className="h-64 w-full relative">
                   <ResponsiveContainer width="100%" height="100%">
                     <PieChart>
@@ -115,15 +115,15 @@ const DietSection: React.FC<Props> = ({ articles, onAddToLibrary, onLog }) => {
                       </Pie>
                       <Tooltip 
                         contentStyle={{borderRadius: '20px', border: 'none', boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.1)', padding: '12px'}}
-                        itemStyle={{fontWeight: '900', fontSize: '12px'}}
+                        itemStyle={{fontWeight: '700', fontSize: '12px'}}
                       />
-                      <Legend verticalAlign="bottom" height={36} iconType="circle" />
+                      <Legend verticalAlign="bottom" height={36} iconType="circle" wrapperStyle={{ fontWeight: '600', fontSize: '11px' }} />
                     </PieChart>
                   </ResponsiveContainer>
                   <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
                      <div className="text-center">
-                        <span className="block text-2xl font-black text-slate-800">100%</span>
-                        <span className="block text-[9px] font-black text-slate-400 uppercase tracking-widest">Balanced</span>
+                        <span className="block text-2xl font-bold text-slate-800">100%</span>
+                        <span className="block text-[9px] font-bold text-slate-400 uppercase tracking-widest">Balanced</span>
                      </div>
                   </div>
                 </div>
@@ -135,14 +135,14 @@ const DietSection: React.FC<Props> = ({ articles, onAddToLibrary, onLog }) => {
                     <div className={`p-3 rounded-2xl ${analysis.isHealthy ? 'bg-emerald-500 shadow-[0_0_15px_#10b981]' : 'bg-rose-500 shadow-[0_0_15px_#f43f5e]'}`}>
                       {analysis.isHealthy ? <Leaf className="w-6 h-6" /> : <ShieldAlert className="w-6 h-6" />}
                     </div>
-                    <h4 className="text-2xl font-black tracking-tight">{analysis.isHealthy ? 'Bio-Verified Healthy' : 'Action Required'}</h4>
+                    <h4 className="text-2xl font-bold tracking-tight">{analysis.isHealthy ? 'Bio-Verified Healthy' : 'Action Required'}</h4>
                   </div>
                   <div className="flex gap-2 mb-8">
-                     <span className="bg-white/10 backdrop-blur-md px-4 py-1.5 rounded-full text-[9px] font-black uppercase tracking-widest flex items-center gap-2 border border-white/10">
+                     <span className="bg-white/10 backdrop-blur-md px-4 py-1.5 rounded-full text-[9px] font-bold uppercase tracking-widest flex items-center gap-2 border border-white/10">
                        <Zap className="w-3 h-3 text-amber-400" /> +15 XP Logged
                      </span>
                      {analysis.isHealthy && (
-                       <span className="bg-emerald-500/20 backdrop-blur-md px-4 py-1.5 rounded-full text-[9px] font-black uppercase tracking-widest flex items-center gap-2 border border-emerald-500/20 text-emerald-400">
+                       <span className="bg-emerald-500/20 backdrop-blur-md px-4 py-1.5 rounded-full text-[9px] font-bold uppercase tracking-widest flex items-center gap-2 border border-emerald-500/20 text-emerald-400">
                         <Zap className="w-3 h-3 text-emerald-400" /> +10 XP Bonus
                        </span>
                      )}
@@ -150,10 +150,10 @@ const DietSection: React.FC<Props> = ({ articles, onAddToLibrary, onLog }) => {
                   <p className="text-slate-300 leading-relaxed text-base font-medium mb-10 opacity-90 border-l-2 border-indigo-500 pl-4">"{analysis.feedback}"</p>
                   
                   <div className="space-y-4">
-                    <p className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-500">Suggested Nutrient Optimization</p>
+                    <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-slate-500">Suggested Nutrient Optimization</p>
                     <div className="grid grid-cols-1 gap-2">
                       {analysis.alternatives.map((alt, i) => (
-                        <div key={i} className="flex items-center gap-3 text-sm font-bold bg-white/5 p-4 rounded-2xl hover:bg-white/10 transition-colors border border-white/5">
+                        <div key={i} className="flex items-center gap-3 text-sm font-semibold bg-white/5 p-4 rounded-2xl hover:bg-white/10 transition-colors border border-white/5">
                           <ArrowRight className="w-4 h-4 text-indigo-400" /> {alt}
                         </div>
                       ))}
@@ -168,7 +168,7 @@ const DietSection: React.FC<Props> = ({ articles, onAddToLibrary, onLog }) => {
           )}
 
           <div className="bg-white p-10 rounded-[3rem] shadow-sm border border-slate-100">
-            <h3 className="text-2xl font-black mb-8 flex items-center gap-3 text-slate-800">
+            <h3 className="text-2xl font-bold mb-8 flex items-center gap-3 text-slate-800">
               <Beef className="w-8 h-8 text-indigo-600" />
               Nutrient Matrix
             </h3>
@@ -181,14 +181,14 @@ const DietSection: React.FC<Props> = ({ articles, onAddToLibrary, onLog }) => {
                 <div key={i} className={`p-8 rounded-[2rem] border border-slate-100 flex flex-col group hover:shadow-xl transition-all ${cat.bg}/30`}>
                   <div className="flex items-center gap-3 mb-6">
                     <div className={`p-3 rounded-2xl bg-white shadow-sm text-lg`}>{cat.icon}</div>
-                    <span className="font-black text-slate-800 uppercase tracking-widest text-xs">{cat.label}</span>
+                    <span className="font-bold text-slate-800 uppercase tracking-widest text-xs">{cat.label}</span>
                   </div>
                   <ul className="space-y-3 flex-1">
                     {cat.items.length > 0 ? cat.items.map((item, j) => (
-                      <li key={j} className="text-sm font-bold text-slate-600 flex items-center gap-3">
+                      <li key={j} className="text-sm font-semibold text-slate-600 flex items-center gap-3">
                          <div className="w-1.5 h-1.5 rounded-full bg-slate-300 group-hover:bg-indigo-500 transition-colors" /> {item}
                       </li>
-                    )) : <li className="text-[10px] font-black text-slate-400 uppercase tracking-widest text-center mt-10">No data detected</li>}
+                    )) : <li className="text-[10px] font-bold text-slate-400 uppercase tracking-widest text-center mt-10">No data detected</li>}
                   </ul>
                 </div>
               ))}
@@ -198,7 +198,7 @@ const DietSection: React.FC<Props> = ({ articles, onAddToLibrary, onLog }) => {
 
         <aside className="space-y-8">
            <div className="bg-white p-10 rounded-[2.5rem] shadow-sm border border-slate-100">
-            <h3 className="text-xl font-black mb-8 flex items-center gap-3 text-slate-800">
+            <h3 className="text-xl font-bold mb-8 flex items-center gap-3 text-slate-800">
               <Target className="w-6 h-6 text-indigo-600" />
               Daily Bio-Targets
             </h3>
@@ -212,9 +212,9 @@ const DietSection: React.FC<Props> = ({ articles, onAddToLibrary, onLog }) => {
                   <div className="flex justify-between items-end mb-3">
                     <div className="flex items-center gap-2">
                        <span className="p-1.5 rounded-lg bg-slate-50 text-slate-400 group-hover:text-indigo-600 transition-colors">{goal.icon}</span>
-                       <span className="text-[10px] font-black text-slate-500 uppercase tracking-widest">{goal.label}</span>
+                       <span className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">{goal.label}</span>
                     </div>
-                    <span className="text-xs font-black text-slate-800">{goal.current} / {goal.target} {goal.unit}</span>
+                    <span className="text-xs font-bold text-slate-800">{goal.current} / {goal.target} {goal.unit}</span>
                   </div>
                   <div className="w-full h-3 bg-slate-100 rounded-full overflow-hidden border border-slate-50">
                     <div 
@@ -228,7 +228,7 @@ const DietSection: React.FC<Props> = ({ articles, onAddToLibrary, onLog }) => {
           </div>
 
           <div className="bg-white p-10 rounded-[2.5rem] shadow-xl border border-slate-100">
-            <h3 className="text-2xl font-black mb-8 flex items-center gap-3 text-slate-800">
+            <h3 className="text-2xl font-bold mb-8 flex items-center gap-3 text-slate-800">
               <Heart className="w-6 h-6 text-rose-500" />
               Healthy Library
             </h3>
@@ -238,19 +238,19 @@ const DietSection: React.FC<Props> = ({ articles, onAddToLibrary, onLog }) => {
                   <div className="w-full h-40 overflow-hidden rounded-3xl mb-4 shadow-lg border border-slate-100">
                     <img src={article.imageUrl} alt={article.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000" />
                     <div className="absolute inset-0 bg-gradient-to-t from-slate-900/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-6">
-                       <button onClick={() => handleSaveArticle(article.id)} className="w-full py-3 bg-white text-slate-900 rounded-xl font-black text-[10px] uppercase tracking-widest flex items-center justify-center gap-2">
+                       <button onClick={() => handleSaveArticle(article.id)} className="w-full py-3 bg-white text-slate-900 rounded-xl font-bold text-[10px] uppercase tracking-widest flex items-center justify-center gap-2">
                           <Bookmark className="w-3 h-3" /> Save for study
                        </button>
                     </div>
                   </div>
                   <div className="px-2">
-                    <span className="text-[9px] font-black text-indigo-600 uppercase tracking-widest">{article.category}</span>
-                    <h4 className="font-black text-slate-800 group-hover:text-indigo-600 transition-colors leading-tight mt-2 text-lg">{article.title}</h4>
+                    <span className="text-[9px] font-bold text-indigo-600 uppercase tracking-widest">{article.category}</span>
+                    <h4 className="font-bold text-slate-800 group-hover:text-indigo-600 transition-colors leading-tight mt-2 text-lg">{article.title}</h4>
                     <div className="mt-4 flex items-center justify-between">
                        <button 
                         onClick={() => handleSaveArticle(article.id)}
                         disabled={savedIds.includes(article.id)}
-                        className={`text-[9px] font-black uppercase tracking-widest flex items-center gap-2 transition-all ${savedIds.includes(article.id) ? 'text-emerald-500' : 'text-slate-400 hover:text-indigo-600'}`}
+                        className={`text-[9px] font-bold uppercase tracking-widest flex items-center gap-2 transition-all ${savedIds.includes(article.id) ? 'text-emerald-500' : 'text-slate-400 hover:text-indigo-600'}`}
                        >
                         {savedIds.includes(article.id) ? (
                           <><CheckCircle2 className="w-3 h-3" /> Saved in Vault</>
@@ -264,7 +264,7 @@ const DietSection: React.FC<Props> = ({ articles, onAddToLibrary, onLog }) => {
                 </div>
               ))}
             </div>
-            <button className="w-full mt-10 py-5 border-2 border-dashed border-slate-100 rounded-3xl text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] hover:bg-slate-50 transition-all">
+            <button className="w-full mt-10 py-5 border-2 border-dashed border-slate-100 rounded-3xl text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em] hover:bg-slate-50 transition-all">
               Explore Resource Hub
             </button>
           </div>
@@ -273,13 +273,6 @@ const DietSection: React.FC<Props> = ({ articles, onAddToLibrary, onLog }) => {
     </div>
   );
 };
-
-const SendIcon = (props: any) => (
-  <svg {...props} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-    <line x1="22" y1="2" x2="11" y2="13" />
-    <polygon points="22 2 15 22 11 13 2 9 22 2" />
-  </svg>
-);
 
 const DropletsIcon = (props: any) => (
   <svg {...props} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">

@@ -169,7 +169,6 @@ const App: React.FC = () => {
             setDietLogs(prev => [res, ...prev]);
             addPoints(15);
           }}
-          persistentAnalysis={latestDiet}
         />;
       case 'weight':
         return <WeightManagement 
@@ -219,24 +218,24 @@ const App: React.FC = () => {
               <div className="flex items-center gap-3">
                 <BellRing className="w-8 h-8" />
                 <div>
-                  <h4 className="font-black text-xl">Alert!</h4>
+                  <h4 className="font-bold text-xl">Alert!</h4>
                   <p className="font-medium">{isAlarmActive}</p>
                 </div>
               </div>
-              <button onClick={() => setIsAlarmActive(null)} className="px-6 py-2 bg-white text-rose-600 font-bold rounded-xl hover:bg-rose-50 transition-colors">Dismiss</button>
+              <button onClick={() => setIsAlarmActive(null)} className="px-6 py-2 bg-white text-rose-600 font-bold rounded-xl hover:bg-rose-50 transition-all">Dismiss</button>
             </div>
           )}
           <header className="py-12 px-10 rounded-[2.5rem] bg-gradient-to-br from-indigo-600 via-blue-600 to-teal-500 text-white shadow-xl relative overflow-hidden">
             <div className="relative z-10">
               <div className="flex items-center gap-3 mb-4">
-                <span className="bg-white/20 backdrop-blur-md px-4 py-1.5 rounded-full text-xs font-black uppercase flex items-center gap-2">
+                <span className="bg-white/20 backdrop-blur-md px-4 py-1.5 rounded-full text-xs font-semibold uppercase flex items-center gap-2">
                   Level {user.level}
                 </span>
-                <span className="bg-white/20 backdrop-blur-md px-4 py-1.5 rounded-full text-xs font-black uppercase flex items-center gap-2">
+                <span className="bg-white/20 backdrop-blur-md px-4 py-1.5 rounded-full text-xs font-semibold uppercase flex items-center gap-2">
                   {user.points} Points
                 </span>
               </div>
-              <h1 className="text-4xl md:text-6xl font-black mb-4">Hi, {user.name.split(' ')[0]}</h1>
+              <h1 className="text-4xl md:text-5xl font-bold mb-4 tracking-tight">Hi, {user.name.split(' ')[0]}</h1>
               <p className="text-blue-100 text-lg max-w-2xl font-medium">Your current goals: {user.goals.join(', ')}</p>
             </div>
             <div className="absolute top-0 right-0 p-8 opacity-10">
@@ -256,7 +255,7 @@ const App: React.FC = () => {
                 </div>
                 <div>
                   <h3 className="text-xl font-bold text-slate-800">{item.label}</h3>
-                  <p className="text-slate-400 text-sm mt-1">Smart tracking & AI support.</p>
+                  <p className="text-slate-400 text-sm mt-1 font-medium">Smart tracking & AI support.</p>
                 </div>
               </button>
             ))}
@@ -267,7 +266,7 @@ const App: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 flex flex-col md:flex-row">
+    <div className="min-h-screen bg-slate-50 flex flex-col md:flex-row font-normal">
       <div className="md:hidden glass sticky top-0 z-50 px-6 py-4 flex justify-between items-center">
         <h2 className="font-bold text-xl text-indigo-600">VitalityPulse</h2>
         <button onClick={() => setIsSidebarOpen(!isSidebarOpen)} className="p-2">
@@ -281,7 +280,7 @@ const App: React.FC = () => {
       `}>
         <div className="h-full flex flex-col">
           <div className="p-8">
-            <h1 className="text-2xl font-black tracking-tight text-slate-900 flex items-center gap-2">
+            <h1 className="text-2xl font-bold tracking-tight text-slate-900 flex items-center gap-2">
               <div className="w-8 h-8 bg-indigo-600 rounded-lg flex items-center justify-center">
                 <ShieldCheck className="text-white w-5 h-5" />
               </div>
@@ -289,10 +288,10 @@ const App: React.FC = () => {
             </h1>
           </div>
 
-          <nav className="flex-1 px-4 space-y-2 overflow-y-auto">
+          <nav className="flex-1 px-4 space-y-1 overflow-y-auto">
             <button
               onClick={() => { setView('home'); setIsSidebarOpen(false); }}
-              className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-colors ${view === 'home' ? 'bg-indigo-50 text-indigo-600' : 'text-slate-600 hover:bg-slate-50'}`}
+              className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold transition-colors ${view === 'home' ? 'bg-indigo-50 text-indigo-600' : 'text-slate-600 hover:bg-slate-50'}`}
             >
               <UserCircle className="w-5 h-5" /> Home
             </button>
@@ -300,7 +299,7 @@ const App: React.FC = () => {
               <button
                 key={item.id}
                 onClick={() => { setView(item.id as View); setIsSidebarOpen(false); }}
-                className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-colors ${view === item.id ? 'bg-indigo-50 text-indigo-600' : 'text-slate-600 hover:bg-slate-50'}`}
+                className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold transition-colors ${view === item.id ? 'bg-indigo-50 text-indigo-600' : 'text-slate-600 hover:bg-slate-50'}`}
               >
                 {item.icon} {item.label}
               </button>
@@ -310,13 +309,13 @@ const App: React.FC = () => {
           <div className="p-4 border-t border-slate-100">
              <button
               onClick={() => { setView('admin'); setIsSidebarOpen(false); }}
-              className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium mb-2 ${view === 'admin' ? 'bg-slate-100 text-slate-900' : 'text-slate-600 hover:bg-slate-50'}`}
+              className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold mb-2 ${view === 'admin' ? 'bg-slate-100 text-slate-900' : 'text-slate-600 hover:bg-slate-50'}`}
             >
               <Settings className="w-5 h-5" /> Admin Console
             </button>
             <button
               onClick={handleLogout}
-              className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-red-600 hover:bg-red-50 transition-colors"
+              className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold text-red-600 hover:bg-red-50 transition-colors"
             >
               <LogOut className="w-5 h-5" /> Logout
             </button>
