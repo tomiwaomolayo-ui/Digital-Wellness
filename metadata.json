@@ -1,0 +1,9 @@
+{
+  "name": " Vitality Pulse: Holistic Wellness & Mental Health",
+  "description": "An all-in-one AI-powered wellness platform featuring mental health analysis, diet tracking, health monitoring, and personalized guidance.",
+  "requestFramePermissions": [
+    "microphone",
+    "geolocation",
+    "bluetooth"
+  ]
+}
